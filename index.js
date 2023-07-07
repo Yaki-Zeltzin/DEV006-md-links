@@ -1,14 +1,32 @@
-const { isAbsolute } = require('./functions.js');
-const { relativeToAbsolute } = require('./functions.js');
+const {
+  isAbsolute,
+  relativeToAbsolute,
+  isValidePath,
+} = require('./functions.js');
 
 function mdLinks(path, options){
   return new Promise((resolve, reject) => {
-    const validate = isAbsolute(path)
+    let absolutePath;
+    const validate = isAbsolute(path) //Valida si la ruta es absoluta
+
     if(validate) {
-      resolve('Es una ruta absoluta');
+      //resolve(isValidePath(path));
+      absolutePath = path;
+      console.log('1. ' + absolutePath + ' es una ruta absoluta');
     }else{
-      reject(relativeToAbsolute(path));
+      //reject(relativeToAbsolute(path));
+      absolutePath = relativeToAbsolute(path); //convierte ruta relativa a absoluta
+      console.log('1. ' + absolutePath +  ' convertimos tu ruta relativa a absoluta');
     };
+
+    isValidePath(absolutePath)
+    .then((res) =>{
+      if(res){
+        console.log('2. la ruta existe')
+      }else{
+        console.log('2. la ruta no existe')
+      }
+    })
   });
 };
 
