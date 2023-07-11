@@ -73,7 +73,19 @@ function readMDFile(route) {
   });
 };
 
-readMDFile('C:./README.md')
+function extractLinksFromMarkdown(content, file){
+  const regex = /\[(.*?)\]\((https?:\/\/[^\s]+)\)/g; //Encontrar coincidencia con la cadena
+  const links = [];
+  let match;
+
+  while((match = regex.exec(content)) !== null){
+    const text = match[1];
+    const url = match[2];
+    links.push({ text, url, file });
+  }
+
+  return links;
+};
 
 
 
@@ -83,4 +95,5 @@ module.exports = {
   isValidePath,
   getFilesInDirectory,
   readMDFile,
+  extractLinksFromMarkdown
 }
