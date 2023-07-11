@@ -1,6 +1,6 @@
 const path = require('path')
 const { access, stat, readdir } = require('node:fs')
-const { readFile } = require('fs')
+const { readFile, constants} = require('fs')
 
 
 function isAbsolute(route) {
@@ -28,9 +28,9 @@ function isFile(route) {
     stat(route, (err, stats) => {
       if (err) {
         reject(err)
-      } else if (stats.isFile()) {
+      } else if (stats.isFile()) {//devuelve true si el es archivo
         resolve(true)
-      } else if (stats.isDirectory()) {
+      } else if (stats.isDirectory()) {//devuelve false si es directorio
         resolve(false)
       }
     });
@@ -43,7 +43,7 @@ function getFilesInDirectory(directoryPath) {
       if (err) {
         console.log(err); //Reachaza la promesa si hay un error al leer el directorio
       } else {
-        const filePaths = files
+        const filePaths = files //devulve todos los archivos encontrados en el directorio
           .map((file) => path.join(directoryPath, file))//Devuelve ruta de directorio + archivo
           .filter((filePath) => path.extname(filePath) === '.md') //extrae la ruta de archivo y busca el que tiene extensión md
 
@@ -54,12 +54,13 @@ function getFilesInDirectory(directoryPath) {
         if (filePaths.length === 0) {
           reject('El directorio no contiene archivos MD');
         } else {
-          resolve(filePaths);
+          resolve(filePaths);//resuelve la promesa con todos los archivos encontrados en el directorio
         };
       };
     });
   });
 };
+
 
 function readMDFile(route) {
   return new Promise((resolve, reject) => {
@@ -93,6 +94,7 @@ module.exports = {
   isAbsolute,
   relativeToAbsolute,
   isValidePath,
+  isFile,
   getFilesInDirectory,
   readMDFile,
   extractLinksFromMarkdown
