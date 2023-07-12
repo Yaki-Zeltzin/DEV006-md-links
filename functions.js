@@ -68,7 +68,7 @@ function readMDFile(route) {
       if(err){
         reject(err);
       }else{
-        resolve(data);
+        resolve(data); //resuelve promesa con la lectura del archivo
       };
     });
   });
